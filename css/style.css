@@ -38,12 +38,14 @@ h2 {
     background-color: rgb(54, 255, 47);
     border-radius: 44px;
     padding: 8px;
+    top: 460px;
+    left: 80px;
 }
 
 #input {
     position: absolute;
-    left: 160px;
-    top: 90px;
+    left: 90px;
+    top: 650px;
 }
 
 #result {
@@ -90,7 +92,7 @@ h2 {
 #round {
     position: absolute;
     top: 580px;
-    left: 400px;
+    left: 90px;
     font-size: 30px;
 }
 
