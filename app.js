@@ -107,17 +107,13 @@ function render() {
 render();
 
 
-// let maxAttempts = 3;
 let maxAttempts = 0;
 
-function test1() {
+function round() {
 
-    maxAttempts = document.getElementById("rounds11").value;
-    console.log(maxAttempts);
-
-
+    maxAttempts = document.getElementById('roundsResult').value;
+    console.log(maxAttempts)
 }
-
 
 
 let userAttempCounter = 0;
@@ -135,27 +131,17 @@ img.addEventListener('click', selctor);
 
 function selctor(event) {
 
-
-
+    userAttempCounter++;
     if (userAttempCounter < maxAttempts) {
         if (event.target.id === 'leftImg') {
             products[leftImgIndex].vote = products[leftImgIndex].vote + 1
-            userAttempCounter++;
-            console.log(userAttempCounter);
-
-
 
             // console.log(maxAttempts);
         } else if (event.target.id === 'centerImg') {
             products[centerImgIndex].vote = products[centerImgIndex].vote + 1
-            userAttempCounter++;
-
         } else {
             products[rightImgIndex].vote = products[rightImgIndex].vote + 1
-            userAttempCounter++;
-
         }
-        // userAttempCounter++;
         render();
     } else {
         //old work
@@ -165,6 +151,7 @@ function selctor(event) {
 
         // we replace all img with main img div
         img.removeEventListener('click', selctor);
+
 
         //old work
         // let result = document.getElementById('result');
@@ -181,10 +168,7 @@ function selctor(event) {
             productsShown.push(products[i].shown);
         }
 
-
     }
-
-
 
 
 
