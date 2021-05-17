@@ -2,13 +2,22 @@
 
 // here i make the arryy to save the product inside and make it global
 let products = [];
+let productsItem = [];
+let productsVotes = [];
+let productsShown = [];
+let currentShow = [];
 
+// console.log(productsItem);
 // making constructor with function
 function Mall(name, source) {
     this.name = name;
     this.source = source;
     this.vote = 0;
+    this.shown = 0;
     products.push(this);
+    productsItem.push(this.name);
+
+
 
 }
 
@@ -40,6 +49,9 @@ let leftImg = document.getElementById('left-img');
 let centerImg = document.getElementById('center-img');
 let rightImg = document.getElementById('right-img');
 
+let img = document.getElementById('img');
+
+
 function getRandomIndex() {
     return Math.floor(Math.random() * products.length);
 }
@@ -58,71 +70,171 @@ function render() {
     leftImgIndex = getRandomIndex();
     centerImgIndex = getRandomIndex();
     rightImgIndex = getRandomIndex();
-    if (leftImgIndex === centerImgIndex) {
+    if (leftImgIndex === centerImgIndex || centerImgIndex == currentShow[0] || centerImgIndex == currentShow[1] || centerImgIndex == currentShow[2]) {
         centerImgIndex = getRandomIndex();
-    } else if (leftImgIndex === rightImgIndex) {
+    } else if (leftImgIndex === rightImgIndex || rightImgIndex == currentShow[0] || rightImgIndex == currentShow[1] || rightImgIndex == currentShow[2]) {
         rightImgIndex = getRandomIndex();
 
-    } else if (centerImgIndex === rightImgIndex) {
+    } else if (centerImgIndex === rightImgIndex || rightImgIndex == currentShow[0] || rightImgIndex == currentShow[1] || rightImgIndex == currentShow[2]) {
 
         rightImgIndex = getRandomIndex();
-    }else{
+    } else {
 
         leftImg.src = products[leftImgIndex].source;
-        rightImg.src = products[rightImgIndex].source;
         centerImg.src = products[centerImgIndex].source;
+        rightImg.src = products[rightImgIndex].source;
+
+
+
+
+        //console.log(currentShow);
+
+
+        // shown number
+
+        products[leftImgIndex].shown++;
+        products[centerImgIndex].shown++;
+        products[rightImgIndex].shown++;
+
     }
-    
+
+
+    currentShow = [leftImgIndex, centerImgIndex,
+        rightImgIndex
+    ];
 }
 
 render();
 
 
-let maxAttempts = 25;
+// let maxAttempts = 3;
+let maxAttempts = 0;
+
+function test1() {
+
+    maxAttempts = document.getElementById("rounds11").value;
+    console.log(maxAttempts);
+
+
+}
+
+
+
 let userAttempCounter = 0;
 
 
+//old work
+// leftImg.addEventListener('click', selctor);
+// centerImg.addEventListener('click', selctor);
+// rightImg.addEventListener('click', selctor);
 
-leftImg.addEventListener('click', selctor);
-centerImg.addEventListener('click', selctor);
-rightImg.addEventListener('click', selctor);
+
+// we replace all img with main img div
+img.addEventListener('click', selctor);
 
 
 function selctor(event) {
 
-    userAttempCounter++;
-    if (userAttempCounter <= maxAttempts) {
+
+
+    if (userAttempCounter < maxAttempts) {
         if (event.target.id === 'leftImg') {
             products[leftImgIndex].vote = products[leftImgIndex].vote + 1
+            userAttempCounter++;
+            console.log(userAttempCounter);
 
+
+
+            // console.log(maxAttempts);
         } else if (event.target.id === 'centerImg') {
             products[centerImgIndex].vote = products[centerImgIndex].vote + 1
+            userAttempCounter++;
+
         } else {
             products[rightImgIndex].vote = products[rightImgIndex].vote + 1
+            userAttempCounter++;
+
         }
+        // userAttempCounter++;
         render();
+    } else {
+        //old work
+        // leftImg.removeEventListener('click', selctor);
+        // centerImg.removeEventListener('click', selctor);
+        // rightImg.removeEventListener('click', selctor);
+
+        // we replace all img with main img div
+        img.removeEventListener('click', selctor);
+
+        //old work
+        // let result = document.getElementById('result');
+        // let list;
+        // for (let i = 0; i < products.length; i++) {
+        //     list = document.createElement('li');
+        //     result.appendChild(list);
+        //     list.textContent = `${products[i].name} Earned ${products[i].vote} Votes`
+        // }
+
+        for (let i = 0; i < products.length; i++) {
+
+            productsVotes.push(products[i].vote);
+            productsShown.push(products[i].shown);
+        }
+
+
     }
-        else {
-    leftImg.removeEventListener('click', selctor);
-    centerImg.removeEventListener('click', selctor);
-    rightImg.removeEventListener('click', selctor);
 
 
-    // let btn = document.getElementById('submit')
-    // YourResult.addEventListener('submit', submitter);
-
-    // function submitter (event) {
-    //     event.preventDefault();
 
 
-let result = document.getElementById('result');
-let list ; 
-for (let i = 0; i < products.length; i++) {
-    list = document.createElement('li');
-    result.appendChild(list);
-    list.textContent= `${products[i].name} Earned ${products[i].vote} Votes`
-} 
-// }
+
 }
 
+function showRuslt() {
+    chart();
+}
+//console.log(products);
+// ============================= chart ===========================================
+
+
+
+
+function chart() {
+    let ctx = document.getElementById('myChart').getContext('2d');
+    ctx.canvas.width = '1340';
+    ctx.canvas.height = '400';
+    let myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: productsItem,
+            datasets: [{
+                data: productsVotes,
+                label: '# of Votes',
+                backgroundColor: [
+                    'rgb(0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgb(0, 0, 0)'
+                ],
+                borderWidth: 1
+            }, {
+                data: productsShown,
+                label: '# of shown',
+                backgroundColor: [
+                    'rgb(255, 255, 0)'
+                ],
+                borderColor: [
+                    'rgb(255, 255, 0)'
+
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
