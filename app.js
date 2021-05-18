@@ -2,6 +2,33 @@
 
 // here i make the arryy to save the product inside and make it global
 let products = [];
+
+function formattedProduct() {
+
+    let formattedData = JSON.stringify(products);
+    //console.log('formattedData', formattedData)
+    localStorage.setItem('products', formattedData);
+}
+
+function normalizeData() {
+    let stringifiedData = localStorage.getItem('products');
+    // test stringifiedData
+    console.log('string', stringifiedData);
+
+    // checking normal data 
+    let normData = JSON.parse(stringifiedData);
+    console.log('norm', normData);
+
+    if (normData !== null) {
+        products = normData;
+    }
+
+    // showRuslt()
+}
+
+
+
+
 let productsItem = [];
 let productsVotes = [];
 let productsShown = [];
@@ -16,6 +43,7 @@ function Mall(name, source) {
     this.shown = 0;
     products.push(this);
     productsItem.push(this.name);
+
 
 
 
@@ -70,12 +98,28 @@ function render() {
     leftImgIndex = getRandomIndex();
     centerImgIndex = getRandomIndex();
     rightImgIndex = getRandomIndex();
-    if (leftImgIndex === centerImgIndex || centerImgIndex == currentShow[0] || centerImgIndex == currentShow[1] || centerImgIndex == currentShow[2]) {
+
+
+    // do {
+    //     centerImgIndex = getRandomIndex();
+    //     rightImgIndex = getRandomIndex();
+    // }
+
+    // while (leftImgIndex === centerImgIndex || leftImgIndex === rightImgIndex) {
+    //     centerImgIndex = getRandomIndex();
+    //     rightImgIndex = getRandomIndex();
+
+    // }
+
+
+
+
+    if (leftImgIndex === centerImgIndex) {
         centerImgIndex = getRandomIndex();
-    } else if (leftImgIndex === rightImgIndex || rightImgIndex == currentShow[0] || rightImgIndex == currentShow[1] || rightImgIndex == currentShow[2]) {
+    } else if (leftImgIndex === rightImgIndex) {
         rightImgIndex = getRandomIndex();
 
-    } else if (centerImgIndex === rightImgIndex || rightImgIndex == currentShow[0] || rightImgIndex == currentShow[1] || rightImgIndex == currentShow[2]) {
+    } else if (centerImgIndex === rightImgIndex) {
 
         rightImgIndex = getRandomIndex();
     } else {
@@ -87,10 +131,10 @@ function render() {
 
 
 
-        //console.log(currentShow);
+        //     //console.log(currentShow);
 
 
-        // shown number
+        //     // shown number
 
         products[leftImgIndex].shown++;
         products[centerImgIndex].shown++;
@@ -98,11 +142,13 @@ function render() {
 
     }
 
-
-    currentShow = [leftImgIndex, centerImgIndex,
-        rightImgIndex
-    ];
 }
+
+currentShow = [leftImgIndex, centerImgIndex,
+    rightImgIndex
+
+];
+//console.log('current', currentShow);
 
 render();
 
@@ -131,8 +177,9 @@ img.addEventListener('click', selctor);
 
 function selctor(event) {
 
+
     userAttempCounter++;
-    if (userAttempCounter < maxAttempts) {
+    if (userAttempCounter <= maxAttempts) {
         if (event.target.id === 'leftImg') {
             products[leftImgIndex].vote = products[leftImgIndex].vote + 1
 
@@ -151,31 +198,29 @@ function selctor(event) {
 
         // we replace all img with main img div
         img.removeEventListener('click', selctor);
-
-
-        //old work
-        // let result = document.getElementById('result');
-        // let list;
-        // for (let i = 0; i < products.length; i++) {
-        //     list = document.createElement('li');
-        //     result.appendChild(list);
-        //     list.textContent = `${products[i].name} Earned ${products[i].vote} Votes`
-        // }
-
         for (let i = 0; i < products.length; i++) {
 
             productsVotes.push(products[i].vote);
             productsShown.push(products[i].shown);
         }
-
     }
+    formattedProduct();
+}
 
-
+function res() {
+    let result = document.getElementById('result');
+    let list;
+    for (let i = 0; i < products.length; i++) {
+        list = document.createElement('li');
+        result.appendChild(list);
+        list.textContent = `${products[i].name} Earned ${products[i].vote} Votes`
+    }
 
 }
 
 function showRuslt() {
     chart();
+    res();
 }
 //console.log(products);
 // ============================= chart ===========================================
@@ -222,3 +267,5 @@ function chart() {
         }
     });
 }
+
+normalizeData();
