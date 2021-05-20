@@ -44,8 +44,8 @@ h2 {
 
 #input {
     position: absolute;
-    left: 90px;
-    top: 695px;
+    left: 710px;
+    top: 660px;
     background-color: #4CAF50;
     color: white;
     padding: 5px 15px;
@@ -66,6 +66,7 @@ h2 {
     clear: both;
     display: table;
     float: right;
+    margin-top: 100px;
 }
 
 #left-img {
@@ -97,8 +98,8 @@ h2 {
 
 #round {
     position: absolute;
-    top: 640px;
-    left: 90px;
+    top: 100px;
+    left: 390px;
     font-size: 30px;
     border: 1px solid black;
     padding: 3px;
@@ -114,4 +115,12 @@ footer {
 #chart {
     position: absolute;
     top: 700px;
+}
+
+#btn2 {
+    margin-right: 70px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 15px;
+    font-size: 16px;
 }

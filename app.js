@@ -3,6 +3,7 @@
 // here i make the arryy to save the product inside and make it global
 let products = [];
 
+// adding user data to the local storage and make the data string 
 function formattedProduct() {
 
     let formattedData = JSON.stringify(products);
@@ -10,6 +11,7 @@ function formattedProduct() {
     localStorage.setItem('products', formattedData);
 }
 
+// herer i make the data back to original format to use it in chart and ul list
 function normalizeData() {
     let stringifiedData = localStorage.getItem('products');
     // test stringifiedData
@@ -28,7 +30,7 @@ function normalizeData() {
 
 
 
-
+// define arrays
 let productsItem = [];
 let productsVotes = [];
 let productsShown = [];
@@ -48,7 +50,7 @@ function Mall(name, source) {
 
 
 }
-
+// adding the items with imgs
 new Mall('bag', 'img/bag.jpg');
 new Mall('banana', 'img/banana.jpg');
 new Mall('bathroom', 'img/bathroom.jpg');
@@ -73,13 +75,14 @@ new Mall('wine-glass', 'img/wine-glass.jpg');
 //here i test the products array and see what inside 
 //console.log(products);
 
+//calling imgs from html file 
 let leftImg = document.getElementById('left-img');
 let centerImg = document.getElementById('center-img');
 let rightImg = document.getElementById('right-img');
 
 let img = document.getElementById('img');
 
-
+// function to make random number between ( 0 - 1 )
 function getRandomIndex() {
     return Math.floor(Math.random() * products.length);
 }
@@ -88,59 +91,46 @@ getRandomIndex();
 
 //console.log(getRandomIndex)
 
-let leftImgIndex = getRandomIndex();
-let centerImgIndex = getRandomIndex();
-let rightImgIndex = getRandomIndex();
 
+// giving the image index from the past function
+let leftImgIndex;
+let centerImgIndex;
+let rightImgIndex;
+// array to prevent it from dublication at the next attration
+let shownImg = [];
+shownImg = [leftImgIndex, rightImgIndex, centerImgIndex];
 
+// the render function for the attration img and call it with deffrent index number
 function render() {
 
     leftImgIndex = getRandomIndex();
     centerImgIndex = getRandomIndex();
     rightImgIndex = getRandomIndex();
 
-
-    // do {
-    //     centerImgIndex = getRandomIndex();
-    //     rightImgIndex = getRandomIndex();
-    // }
-
-    // while (leftImgIndex === centerImgIndex || leftImgIndex === rightImgIndex) {
-    //     centerImgIndex = getRandomIndex();
-    //     rightImgIndex = getRandomIndex();
-
-    // }
-
-
-
-
-    if (leftImgIndex === centerImgIndex) {
+    do {
+        leftImgIndex = getRandomIndex();
         centerImgIndex = getRandomIndex();
-    } else if (leftImgIndex === rightImgIndex) {
         rightImgIndex = getRandomIndex();
-
-    } else if (centerImgIndex === rightImgIndex) {
-
-        rightImgIndex = getRandomIndex();
-    } else {
-
-        leftImg.src = products[leftImgIndex].source;
-        centerImg.src = products[centerImgIndex].source;
-        rightImg.src = products[rightImgIndex].source;
-
-
-
-
-        //     //console.log(currentShow);
-
-
-        //     // shown number
-
-        products[leftImgIndex].shown++;
-        products[centerImgIndex].shown++;
-        products[rightImgIndex].shown++;
-
     }
+    while (leftImgIndex === rightImgIndex ||
+        leftImgIndex == centerImgIndex || centerImgIndex == rightImgIndex ||
+        shownImg.includes(leftImgIndex) ||
+        shownImg.includes(rightImgIndex) ||
+        shownImg.includes(centerImgIndex))
+
+    shownImg = [leftImgIndex, rightImgIndex, centerImgIndex];
+
+    leftImg.src = products[leftImgIndex].source;
+    centerImg.src = products[centerImgIndex].source;
+    rightImg.src = products[rightImgIndex].source;
+
+    //console.log(currentShow);
+
+    // shown number
+    products[leftImgIndex].shown++;
+    products[centerImgIndex].shown++;
+    products[rightImgIndex].shown++;
+
 
 }
 
@@ -155,6 +145,7 @@ render();
 
 let maxAttempts = 0;
 
+// making the attmpts can entered by user and its defult by 25
 function round() {
 
     maxAttempts = document.getElementById('roundsResult').value;
@@ -174,7 +165,7 @@ let userAttempCounter = 0;
 // we replace all img with main img div
 img.addEventListener('click', selctor);
 
-
+// adding the event and increse the counter of voting 
 function selctor(event) {
 
 
@@ -207,6 +198,7 @@ function selctor(event) {
     formattedProduct();
 }
 
+// showing the result
 function res() {
     let result = document.getElementById('result');
     let list;
@@ -227,7 +219,7 @@ function showRuslt() {
 
 
 
-
+// making the chart 
 function chart() {
     let ctx = document.getElementById('myChart').getContext('2d');
     ctx.canvas.width = '1340';
